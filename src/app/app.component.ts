@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -6,7 +7,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Discord';
+  title = '';
+  add: FormGroup;
+  constructor(public fb: FormBuilder) {
+    this.add = this.fb.group({
+      name: ['', Validators.required],
+      token: ['', Validators.required],
+    });
+  }
 
    discord() {
     (async () => {
@@ -14,18 +22,23 @@ export class AppComponent {
         method: "POST",
     
         body: JSON.stringify({
-          username: "Moshi"
+          username: `${this.add.controls['name'].value}`
         }),
     
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "MTg1NDAyOTAxMjM2MTU0MzY4.G7P2NL.30muqBi5gQeLnUXaxvLvzwoC4W5CseVs2J1uFY"
+          "Authorization": `${this.add.controls['token'].value}`
         }
       });
     
       const result = await response.json();
     
       console.log(result);
+      if(result.errors) {
+        this.title = result.errors.username._errors[0].message
+      } else {
+        this.title = "Not taken or not a valid token!"
+      }
     })();
    }
 }

@@ -1,5 +1,17 @@
-<input type="text" name="" id="">
-<button mat-mini-fab color="warn"
-        (click)="discord()">
-        <mat-icon>check username</mat-icon>
-      </button>
+<body>
+  <form [formGroup]="add" class="center">
+    <h1 mat-dialog-title>Check discord username availability</h1>
+    <mat-form-field style="width: 100%;" appearance="fill">
+      <mat-label>Username to check</mat-label>
+      <input formControlName="name" matInput>
+    </mat-form-field>
+    <mat-form-field style="width: 100%;" appearance="fill">
+      <mat-label>Discord Token, and no i am not stealing your token</mat-label>
+      <input formControlName="token" matInput>
+
+    </mat-form-field>
+    <button style="width: 100%;" mat-flat-button color="primary" [disabled]="!add.valid" (click)="discord()">Check</button>
+  </form>
+  <br>
+  <h1><strong>{{title}}</strong></h1>
+</body>
